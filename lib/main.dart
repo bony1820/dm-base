@@ -20,7 +20,7 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Demo',
       theme: ThemeData.from(colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple)),
       home: BlocProvider.value(
-        value: bloc..add(LoadCounter()),
+        value: bloc..add(const CounterEvent.load()),
         child: const MyHomePage(title: 'Flutter Demo Home Page'),
       ),
     );
@@ -42,23 +42,23 @@ class MyHomePage extends StatelessWidget {
       body: Center(
         child: BlocBuilder<CounterBloc, CounterState>(
           builder: (context, state) {
-            if (state is CounterLoading) return const CircularProgressIndicator();
-            if (state is CounterLoaded) {
-              return Column(
+            return state.when(
+              initial: () => const Text('Press the button to load'),
+              loading: () => const CircularProgressIndicator(),
+              loaded: (count) => Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   const Text('You have pushed the button this many times:'),
-                  Text('${state.count}', style: Theme.of(context).textTheme.headlineMedium),
+                  Text('$count', style: Theme.of(context).textTheme.headlineMedium),
                 ],
-              );
-            }
-            if (state is CounterError) return Text('Error: ${state.message}');
-            return const Text('Press the button to load');
+              ),
+              error: (message) => Text('Error: $message'),
+            );
           },
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () => context.read<CounterBloc>().add(IncrementCounter()),
+        onPressed: () => context.read<CounterBloc>().add(const CounterEvent.increment()),
         tooltip: 'Increment',
         child: const Icon(Icons.add),
       ),

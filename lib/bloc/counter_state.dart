@@ -1,26 +1,11 @@
-import 'package:equatable/equatable.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 
-abstract class CounterState extends Equatable {
-  @override
-  List<Object?> get props => [];
-}
+part 'counter_state.freezed.dart';
 
-class CounterInitial extends CounterState {}
-
-class CounterLoading extends CounterState {}
-
-class CounterLoaded extends CounterState {
-  final int count;
-  CounterLoaded(this.count);
-
-  @override
-  List<Object?> get props => [count];
-}
-
-class CounterError extends CounterState {
-  final String message;
-  CounterError(this.message);
-
-  @override
-  List<Object?> get props => [message];
+@freezed
+class CounterState with _$CounterState {
+  const factory CounterState.initial() = CounterInitial;
+  const factory CounterState.loading() = CounterLoading;
+  const factory CounterState.loaded(int count) = CounterLoaded;
+  const factory CounterState.error(String message) = CounterError;
 }

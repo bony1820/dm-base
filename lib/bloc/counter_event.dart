@@ -1,10 +1,9 @@
-import 'package:equatable/equatable.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 
-abstract class CounterEvent extends Equatable {
-  @override
-  List<Object?> get props => [];
+part 'counter_event.freezed.dart';
+
+@freezed
+class CounterEvent with _$CounterEvent {
+  const factory CounterEvent.load() = LoadCounter;
+  const factory CounterEvent.increment() = IncrementCounter;
 }
-
-class LoadCounter extends CounterEvent {}
-
-class IncrementCounter extends CounterEvent {}

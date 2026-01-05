@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:dartz/dartz.dart';
 
 class Failure {
@@ -6,24 +8,24 @@ class Failure {
 }
 
 abstract class CounterRepository {
-  Future<Either<Failure, int>> fetchInitialCount();
-  Future<Either<Failure, int>> increment(int current);
+  Future<Either<Failure, int>> fetch();
+  Future<Either<Failure, int>> increment();
 }
 
 class CounterRepositoryImpl implements CounterRepository {
   int _count = 0;
 
   @override
-  Future<Either<Failure, int>> fetchInitialCount() async {
+  Future<Either<Failure, int>> fetch() async {
     // Simulate delay
-    await Future.delayed(const Duration(milliseconds: 200));
-    return Right(_count);
+    await Future.delayed(const Duration(milliseconds: 300));
+    return right(_count);
   }
 
   @override
-  Future<Either<Failure, int>> increment(int current) async {
+  Future<Either<Failure, int>> increment() async {
     await Future.delayed(const Duration(milliseconds: 100));
-    _count = current + 1;
-    return Right(_count);
+    _count++;
+    return right(_count);
   }
 }
